@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-import renderer from 'react-test-renderer';
+import { render, fireEvent } from '@testing-library/react-native';
+import { useNavigation } from '@react-navigation/native';
 
 /**
  * WordPress dependencies
  */
-// import { RegistryProvider, createRegistry } from '@wordpress/data';
+import { blockSettingsScreens } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -15,14 +16,19 @@ import Controls from '../controls';
 
 jest.mock( '@wordpress/compose', () => ( {
 	...jest.requireActual( '@wordpress/compose' ),
-	withPreferredColorScheme: jest.fn( ( Component ) => () => (
+	withPreferredColorScheme: jest.fn( ( Component ) => ( props ) => (
 		<Component
+			{ ...props }
 			preferredColorScheme={ {} }
 			getStylesFromColorScheme={ jest.fn( () => ( {} ) ) }
 		/>
 	) ),
 } ) );
 jest.mock( '@react-navigation/core' );
+const mockNavigation = {
+	navigate: jest.fn(),
+};
+useNavigation.mockReturnValue( mockNavigation );
 
 const setAttributes = jest.fn();
 const didUploadFail = jest.fn();
@@ -32,11 +38,20 @@ const onSelectMedia = jest.fn();
 const hasOnlyColorBackground = false;
 const openMediaOptionsRef = { current: jest.fn( () => {} ) };
 
+const MOCK_URL = 'mock-url';
+const MOCK_FOCAL_POINT = { x: '0.5', y: '0.5' };
+
+const attributes = {
+	focalPoint: MOCK_FOCAL_POINT,
+	onFocalPointChange: jest.fn(),
+	url: MOCK_URL,
+};
+
 describe( 'Cover block edit controls', () => {
-	it( 'renders without crashing', () => {
-		const output = renderer.create(
+	it( 'allows navigating to focal point settings', () => {
+		const { getByText } = render(
 			<Controls
-				attributes={ {} }
+				attributes={ attributes }
 				didUploadFail={ didUploadFail }
 				hasOnlyColorBackground={ hasOnlyColorBackground }
 				isUploadInProgress={ isUploadInProgress }
@@ -46,7 +61,15 @@ describe( 'Cover block edit controls', () => {
 				setAttributes={ setAttributes }
 			/>
 		);
-		const json = output.toJSON();
-		expect( json ).toBeTruthy();
+		fireEvent.press( getByText( 'Edit focal point' ) );
+
+		expect( mockNavigation.navigate ).toHaveBeenCalledWith(
+			blockSettingsScreens.focalPoint,
+			{
+				url: MOCK_URL,
+				focalPoint: MOCK_FOCAL_POINT,
+				onFocalPointChange: expect.any( Function ),
+			}
+		);
 	} );
 } );
