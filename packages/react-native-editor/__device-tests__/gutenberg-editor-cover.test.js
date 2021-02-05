@@ -29,4 +29,47 @@ describe( 'Gutenberg Editor Cover Block test', () => {
 		expect( coverBlock ).toBeTruthy();
 		await editorPage.removeBlockAtPosition( blockNames.cover );
 	} );
+
+	it( 'allows modifying media from within block settings', async () => {
+		await editorPage.setHtmlContent( testData.coverHeightWithRemUnit );
+
+		const coverBlock = await editorPage.getBlockAtPosition(
+			blockNames.cover
+		);
+		await coverBlock.click();
+
+		// Can only add image from media library on iOS
+		if ( ! isAndroid() ) {
+			// Open block settings
+			const settingsButton = await editorPage.driver.elementByAccessibilityId(
+				'Open Settings'
+			);
+			await settingsButton.click();
+
+			// Add initial media
+			const addMediaButton = await editorPage.driver.elementByAccessibilityId(
+				'Add image or video'
+			);
+			await addMediaButton.click();
+			await editorPage.chooseMediaLibrary();
+
+			// Edit media within block settings
+			await settingsButton.click();
+			await editorPage.driver.sleep( 2000 ); // Await media load
+			const editImageButton = await editorPage.driver.elementsByAccessibilityId(
+				'Edit image'
+			);
+			await editImageButton[ editImageButton.length - 1 ].click();
+
+			// Replace image
+			const replaceButton = await editorPage.driver.elementByAccessibilityId(
+				'Replace'
+			);
+			await replaceButton.click();
+			await editorPage.chooseMediaLibrary();
+		}
+
+		expect( coverBlock ).toBeTruthy();
+		await editorPage.removeBlockAtPosition( blockNames.cover );
+	} );
 } );
