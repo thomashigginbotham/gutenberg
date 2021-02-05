@@ -21,7 +21,7 @@ import {
 import { plus } from '@wordpress/icons';
 import { useState, useCallback } from '@wordpress/element';
 import { usePreferredColorSchemeStyle } from '@wordpress/compose';
-import { InspectorControls, MediaUpload } from '@wordpress/block-editor';
+import { MediaUpload } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -142,7 +142,7 @@ function Controls( {
 	);
 
 	return (
-		<InspectorControls>
+		<>
 			<OverlayColorSettings
 				overlayColor={ attributes.overlayColor }
 				customOverlayColor={ attributes.customOverlayColor }
@@ -288,7 +288,7 @@ function Controls( {
 					/>
 				) }
 			</PanelBody>
-		</InspectorControls>
+		</>
 	);
 }
 
