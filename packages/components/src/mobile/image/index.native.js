@@ -242,16 +242,16 @@ const ImageComponent = ( {
 						</Text>
 					</View>
 				) }
-
-				{ editButton && isSelected && ! isUploadInProgress && (
-					<ImageEditingButton
-						onSelectMediaUploadOption={ onSelectMediaUploadOption }
-						openMediaOptions={ openMediaOptions }
-						url={ ! isUploadFailed && imageData && url }
-						pickerOptions={ mediaPickerOptions }
-					/>
-				) }
 			</View>
+
+			{ editButton && isSelected && ! isUploadInProgress && (
+				<ImageEditingButton
+					onSelectMediaUploadOption={ onSelectMediaUploadOption }
+					openMediaOptions={ openMediaOptions }
+					url={ ! isUploadFailed && imageData && url }
+					pickerOptions={ mediaPickerOptions }
+				/>
+			) }
 		</View>
 	);
 };
