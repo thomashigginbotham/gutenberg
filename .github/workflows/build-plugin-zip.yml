@@ -81,7 +81,7 @@ jobs:
         run: |
           IFS='.' read -r -a VERSION_ARRAY <<< "${VERSION#v}"
           MILESTONE="Gutenberg ${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}"
-          npm run changelog -- --milestone="$MILESTONE" > release-notes.txt
+          npm run changelog -- --milestone="$MILESTONE" --unreleased > release-notes.txt
           sed -ie '1,6d' release-notes.txt
 
       - name: Upload release notes artifact
