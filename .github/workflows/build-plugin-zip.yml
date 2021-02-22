@@ -53,6 +53,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
+      - name: Fetch version bump commit
+        if: startsWith(github.event.inputs.version, 'v')
+        run: git pull origin ${{ github.ref }}
+
       - name: Cache node modules
         uses: actions/cache@v2
         env:
