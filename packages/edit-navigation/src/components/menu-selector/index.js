@@ -16,9 +16,9 @@ import AddMenu from '../add-menu';
 export default function MenuSelector( { onSelectMenu, menus } ) {
 	return (
 		<div className="edit-navigation-menu-selector">
-			<div className="edit-navigation-menu-selector__header">
+			<h3 className="edit-navigation-menu-selector__header">
 				{ __( 'Choose a menu to edit: ' ) }
-			</div>
+			</h3>
 			<div className="edit-navigation-menu-selector__body">
 				<div>
 					<MenuGroup>
