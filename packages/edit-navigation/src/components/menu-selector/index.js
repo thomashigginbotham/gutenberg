@@ -3,15 +3,9 @@
  */
 import {
 	MenuGroup,
-	MenuItemsChoice,
-	Button,
-	Dropdown,
+	MenuItemsChoice
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-/**
- * Internal dependencies
- */
-import AddMenu from '../add-menu';
 
 export default function MenuSelector( { onSelectMenu, menus } ) {
 	return (
@@ -29,27 +23,6 @@ export default function MenuSelector( { onSelectMenu, menus } ) {
 						} ) ) }
 					/>
 				</MenuGroup>
-
-				<Dropdown
-					position="bottom left"
-					renderToggle={ ( { isOpen, onToggle } ) => (
-						<Button
-							aria-expanded={ isOpen }
-							onClick={ onToggle }
-							className="components-button is-primary
-					 edit-navigation__menu-selector__select-menu-button"
-						>
-							{ __( 'Create new menu' ) }
-						</Button>
-					) }
-					renderContent={ () => (
-						<AddMenu
-							className="edit-navigation-header__add-menu"
-							menus={ menus }
-							onCreate={ onSelectMenu }
-						/>
-					) }
-				/>
 			</div>
 		</div>
 	);
