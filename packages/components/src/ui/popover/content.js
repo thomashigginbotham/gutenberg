@@ -48,7 +48,11 @@ function PopoverContent( props, forwardedRef ) {
 			{ ...popover }
 		>
 			{ showContent && (
-				<Card elevation={ elevation } ref={ forwardedRef }>
+				<Card
+					className={ styles.cardStyle }
+					elevation={ elevation }
+					ref={ forwardedRef }
+				>
 					{ children }
 				</Card>
 			) }
