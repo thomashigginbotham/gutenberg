@@ -83,13 +83,15 @@ export default function Layout( { blockEditorSettings } ) {
 							'has-block-inspector': isBlockEditorReady,
 						} ) }
 					>
-						<Header
-							isPending={ ! hasLoadedMenus }
-							menus={ menus }
-							selectedMenuId={ selectedMenuId }
-							onSelectMenu={ selectMenu }
-							navigationPost={ navigationPost }
-						/>
+						{ ! isMenuDeleted && (
+							<Header
+								isPending={ ! hasLoadedMenus }
+								menus={ menus }
+								selectedMenuId={ selectedMenuId }
+								onSelectMenu={ selectMenu }
+								navigationPost={ navigationPost }
+							/>
+						) }
 
 						{ ! hasFinishedInitialLoad && <Spinner /> }
 

@@ -15,12 +15,12 @@ import AddMenu from '../add-menu';
 
 export default function MenuSelector( { onSelectMenu, menus } ) {
 	return (
-		<div className="edit-navigation-menu-selector-wrapper">
-			<div className="edit-navigation-menu-selector-header">
-				{ __( 'Chose a menu to edit: ' ) }
+		<div className="edit-navigation-menu-selector">
+			<div className="edit-navigation-menu-selector__header">
+				{ __( 'Choose a menu to edit: ' ) }
 			</div>
-			<div className="edit-navigation-menu-selector">
-				<div className="editor-styles-wrapper">
+			<div className="edit-navigation-menu-selector__body">
+				<div>
 					<MenuGroup>
 						<MenuItemsChoice
 							onSelect={ onSelectMenu }

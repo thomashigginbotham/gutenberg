@@ -13,7 +13,7 @@ export default function DeleteMenuPanel( {
 			<Button
 				isLink
 				isDestructive
-				className={ isMenuBeingDeleted && 'is-busy' }
+				isBusy={ isMenuBeingDeleted }
 				onClick={ () => {
 					if (
 						// eslint-disable-next-line no-alert

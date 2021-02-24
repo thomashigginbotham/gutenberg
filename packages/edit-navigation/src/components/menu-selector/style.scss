@@ -3,14 +3,16 @@
 }
 
 .edit-navigation-menu-selector {
+	margin: $grid-unit-30 auto;
+	width: fit-content;
+}
+
+.edit-navigation-menu-selector__body {
 	padding: $grid-unit-15;
 	@extend .edit-navigation-editor;
-	&-header {
-		margin-bottom: $grid-unit-15;
-		font-weight: bold;
-	}
-	&-wrapper {
-		margin: 0 auto;
-		width: fit-content;
-	}
+}
+
+.edit-navigation-menu-selector__header {
+	margin-bottom: $grid-unit-15;
+	font-weight: bold;
 }
