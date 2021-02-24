@@ -17,7 +17,15 @@ export default function useNavigationEditor() {
 	);
 	const [ selectedMenuId, setSelectedMenuId ] = useState( null );
 	const [ isMenuDeleted, setIsMenuDeleted ] = useState( false );
-	const [ isMenuBeingDeleted, setIsMenuBeingDeleted ] = useState( false );
+	const isMenuBeingDeleted = useSelect(
+		( select ) =>
+			select( 'core' ).isDeletingEntityRecord(
+				'root',
+				'menu',
+				selectedMenuId
+			),
+		[ selectedMenuId ]
+	);
 
 	const { menus, hasLoadedMenus } = useSelect( ( select ) => {
 		const selectors = select( 'core' );
@@ -64,12 +72,10 @@ export default function useNavigationEditor() {
 	const { deleteMenu: _deleteMenu } = useDispatch( 'core' );
 
 	const deleteMenu = async () => {
-		setIsMenuBeingDeleted( true );
 		const didDeleteMenu = await _deleteMenu( selectedMenuId, {
 			force: true,
 		} );
 		if ( didDeleteMenu ) {
-			setIsMenuBeingDeleted( false );
 			setSelectedMenuId( null );
 			createInfoNotice( __( 'Menu deleted' ), {
 				type: 'snackbar',
