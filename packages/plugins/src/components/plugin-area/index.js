@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { map } from 'lodash';
+import memoize from 'memize';
 
 /**
  * WordPress dependencies
@@ -54,6 +55,12 @@ class PluginArea extends Component {
 		super( ...arguments );
 
 		this.setPlugins = this.setPlugins.bind( this );
+		this.memoizedContext = memoize( ( name, icon ) => {
+			return {
+				name,
+				icon,
+			};
+		} );
 		this.state = this.getCurrentPluginsState();
 	}
 
@@ -62,10 +69,7 @@ class PluginArea extends Component {
 			plugins: map( getPlugins(), ( { icon, name, render } ) => {
 				return {
 					Plugin: render,
-					context: {
-						name,
-						icon,
-					},
+					context: this.memoizedContext( name, icon ),
 				};
 			} ),
 		};
