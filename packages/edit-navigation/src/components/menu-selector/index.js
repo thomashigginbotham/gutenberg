@@ -20,38 +20,36 @@ export default function MenuSelector( { onSelectMenu, menus } ) {
 				{ __( 'Choose a menu to edit: ' ) }
 			</h3>
 			<div className="edit-navigation-menu-selector__body">
-				<div>
-					<MenuGroup>
-						<MenuItemsChoice
-							onSelect={ onSelectMenu }
-							choices={ menus.map( ( menu ) => ( {
-								value: menu.id,
-								label: menu.name,
-							} ) ) }
-						/>
-					</MenuGroup>
-
-					<Dropdown
-						position="bottom left"
-						renderToggle={ ( { isOpen, onToggle } ) => (
-							<Button
-								aria-expanded={ isOpen }
-								onClick={ onToggle }
-								className="components-button is-primary
-					 edit-navigation__menu-selector__select-menu-button"
-							>
-								{ __( 'Create new menu' ) }
-							</Button>
-						) }
-						renderContent={ () => (
-							<AddMenu
-								className="edit-navigation-header__add-menu"
-								menus={ menus }
-								onCreate={ onSelectMenu }
-							/>
-						) }
+				<MenuGroup>
+					<MenuItemsChoice
+						onSelect={ onSelectMenu }
+						choices={ menus.map( ( menu ) => ( {
+							value: menu.id,
+							label: menu.name,
+						} ) ) }
 					/>
-				</div>
+				</MenuGroup>
+
+				<Dropdown
+					position="bottom left"
+					renderToggle={ ( { isOpen, onToggle } ) => (
+						<Button
+							aria-expanded={ isOpen }
+							onClick={ onToggle }
+							className="components-button is-primary
+					 edit-navigation__menu-selector__select-menu-button"
+						>
+							{ __( 'Create new menu' ) }
+						</Button>
+					) }
+					renderContent={ () => (
+						<AddMenu
+							className="edit-navigation-header__add-menu"
+							menus={ menus }
+							onCreate={ onSelectMenu }
+						/>
+					) }
+				/>
 			</div>
 		</div>
 	);
