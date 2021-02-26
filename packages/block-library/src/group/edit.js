@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
 
 /**
@@ -25,6 +24,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { useInstanceId } from '@wordpress/compose';
 const { __Visualizer: BoxControlVisualizer } = BoxControl;
 
 const isWeb = Platform.OS === 'web';
@@ -58,6 +58,7 @@ export const CSS_UNITS = [
 ];
 
 function GroupEdit( { attributes, setAttributes, clientId } ) {
+	const id = useInstanceId( GroupEdit );
 	const { defaultLayout, hasInnerBlocks } = useSelect(
 		( select ) => {
 			const { getBlock, getSettings } = select( blockEditorStore );
@@ -73,10 +74,13 @@ function GroupEdit( { attributes, setAttributes, clientId } ) {
 	const blockProps = useBlockProps();
 	const { tagName: TagName = 'div', templateLock, layout = {} } = attributes;
 	const { contentSize, wideSize } = layout;
+	// TODO: this shouldn't be based on the values but on a theme.json config.
+	const supportsLayout = !! contentSize || !! wideSize;
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: classnames( 'wp-block-group__inner-container', {
-				[ `wp-container-${ layout.id }` ]: !! layout.id,
+			className: classnames( {
+				'wp-block-group__inner-container': ! supportsLayout,
+				[ `wp-container-${ id }` ]: contentSize || wideSize,
 			} ),
 		},
 		{
@@ -105,7 +109,6 @@ function GroupEdit( { attributes, setAttributes, clientId } ) {
 								setAttributes( {
 									layout: {
 										...defaultLayout,
-										id: layout.id ?? uuid(),
 									},
 								} );
 							} }
@@ -125,7 +128,6 @@ function GroupEdit( { attributes, setAttributes, clientId } ) {
 								layout: {
 									...layout,
 									contentSize: nextWidth,
-									id: layout.id ?? uuid(),
 								},
 							} );
 						} }
@@ -143,7 +145,6 @@ function GroupEdit( { attributes, setAttributes, clientId } ) {
 								layout: {
 									...layout,
 									wideSize: nextWidth,
-									id: layout.id ?? uuid(),
 								},
 							} );
 						} }
@@ -173,17 +174,17 @@ function GroupEdit( { attributes, setAttributes, clientId } ) {
 				{ ( wideSize || contentSize ) && (
 					<style>
 						{ `
-							.wp-container-${ layout.id } > * {
+							.wp-container-${ id } > * {
 								max-width: ${ contentSize ?? wideSize };
 								margin-left: auto;
 								margin-right: auto;
 							}
 						
-							.wp-container-${ layout.id } > [data-align="wide"] {
+							.wp-container-${ id } > [data-align="wide"] {
 								max-width: ${ wideSize ?? contentSize };
 							}
 						
-							.wp-container-${ layout.id } > [data-align="full"] {
+							.wp-container-${ id } > [data-align="full"] {
 								max-width: none;
 							}
 						` }
@@ -193,6 +194,11 @@ function GroupEdit( { attributes, setAttributes, clientId } ) {
 					values={ attributes.style?.spacing?.padding }
 					showValues={ attributes.style?.visualizers?.padding }
 				/>
+				{ /*
+				 * When the layout option is supported, the extra div is not necessary,
+				 * it's just there because of the extra "BoxControlVisualizer" and "style"
+				 * that should be outside the inner blocks container.
+				 */ }
 				<div { ...innerBlocksProps } />
 			</TagName>
 		</>
