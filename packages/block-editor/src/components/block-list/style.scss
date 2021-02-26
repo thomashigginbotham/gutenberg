@@ -637,6 +637,10 @@
 			border: none;
 		}
 		padding: $grid-unit-15 / 2;
+
+		&:active {
+			color: $white;
+		}
 	}
 
 	.components-button.block-selection-button_select-button {
