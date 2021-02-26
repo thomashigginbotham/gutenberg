@@ -12,9 +12,9 @@
  * @package gutenberg
  */
 
-### BEGIN AUTO-GENERATED DEFINES
+// BEGIN AUTO-GENERATED DEFINES
 defined( 'GUTENBERG_DEVELOPMENT_MODE' ) or define( 'GUTENBERG_DEVELOPMENT_MODE', true );
-### END AUTO-GENERATED DEFINES
+// END AUTO-GENERATED DEFINES
 
 gutenberg_pre_init();
 
@@ -241,3 +241,102 @@ function register_site_icon_url( $response ) {
 add_filter( 'rest_index', 'register_site_icon_url' );
 
 add_theme_support( 'widgets-block-editor' );
+
+class Date_Widget extends WP_Widget {
+	protected $default_instance = array(
+		'date' => null,
+	);
+
+	public function __construct() {
+		$widget_ops  = array(
+			'classname'                   => 'widget_date',
+			'description'                 => __( 'A date.', 'gutenberg' ),
+			'customize_selective_refresh' => true,
+		);
+		$control_ops = array(
+			'width'  => 200,
+			'height' => 350,
+		);
+		parent::__construct( 'date', __( 'Date', 'gutenberg' ), $widget_ops, $control_ops );
+	}
+
+	public function widget( $args, $instance ) {
+		echo $args['before_widget'];
+		if ( $instance['date'] ) {
+			echo $instance['date']->format( 'c' );
+		}
+		echo $args['after_widget'];
+	}
+
+	public function update( $new_instance, $old_instance ) {
+		$instance = array_merge( $this->default_instance, $old_instance );
+		if ( $new_instance['date'] ) {
+			$instance['date'] = DateTime::createFromFormat( 'Y-m-d', $new_instance['date'] );
+		} else {
+			$instance['date'] = null;
+		}
+		return $instance;
+	}
+
+	public function form( $instance ) {
+		$instance = wp_parse_args( (array) $instance, $this->default_instance );
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'date' ); ?>">Date:</label>
+			<input
+				id="<?php echo $this->get_field_id( 'date' ); ?>"
+				class="widefat"
+				name="<?php echo $this->get_field_name( 'date' ); ?>"
+				type="date"
+				value="<?php echo $instance['date'] ? $instance['date']->format( 'Y-m-d' ) : ''; ?>"
+			/>
+		</p>
+		<?php
+	}
+}
+add_action(
+	'widgets_init',
+	function() {
+		register_widget( 'Date_Widget' );
+	}
+);
+
+function marquee_greeting_init() {
+	wp_register_sidebar_widget(
+		'marquee_greeting',
+		'Marquee Greeting',
+		function() {
+			$greeting = get_option( 'widget_marquee_greeting', 'Hello!' );
+			printf( '<marquee>%s</marquee>', esc_html( $greeting ) );
+		}
+	);
+
+	wp_register_widget_control(
+		'marquee_greeting',
+		'Marquee Greeting',
+		function() {
+			if ( isset( $_POST['marquee-greeting'] ) ) {
+				update_option(
+					'widget_marquee_greeting',
+					sanitize_text_field( $_POST['marquee-greeting'] )
+				);
+			}
+
+			$greeting = get_option( 'widget_marquee_greeting' );
+			?>
+			<p>
+				<label for="marquee-greeting">Greeting:</label>
+				<input
+					id="marquee-greeting"
+					class="widefat"
+					name="marquee-greeting"
+					type="text"
+					value="<?php echo esc_attr( $greeting ); ?>"
+					placeholder="Hello!"
+				/>
+			</p>
+			<?php
+		}
+	);
+}
+add_action( 'init', 'marquee_greeting_init' );

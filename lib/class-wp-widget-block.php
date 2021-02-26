@@ -32,6 +32,7 @@ class WP_Widget_Block extends WP_Widget {
 			'classname'                   => '%s', // Set dynamically in widget().
 			'description'                 => __( 'Gutenberg block.', 'gutenberg' ),
 			'customize_selective_refresh' => true,
+			'show_instance_in_rest'       => true,
 		);
 		$control_ops = array(
 			'width'  => 400,
