@@ -20,6 +20,22 @@
 .wp-block-navigation__container {
 	// Vertically align child blocks, like Social Links or Search.
 	align-items: center;
+
+	// Reset the default list styles
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+
+	// Horizontal layout
+	display: flex;
+	flex-wrap: wrap;
+
+	// Vertical layout
+
+	.is-vertical & {
+		display: block;
+	}
+
 }
 
 .items-justified-center > ul {

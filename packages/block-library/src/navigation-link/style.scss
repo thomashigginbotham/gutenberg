@@ -9,23 +9,6 @@
 	}
 }
 
-.wp-block-navigation__container {
-	// Reset the default list styles
-	list-style: none;
-	margin: 0;
-	padding-left: 0;
-
-	// Horizontal layout
-	display: flex;
-	flex-wrap: wrap;
-
-	// Vertical layout
-
-	.is-vertical & {
-		display: block;
-	}
-}
-
 // Styles for submenu flyout
 .has-child {
 	> .wp-block-navigation-link__content {
